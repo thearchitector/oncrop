@@ -1,8 +1,8 @@
 """
-Detects AR markers within a single frame, and replaces them with given faces.
+Prototyping for phone tracking with specific color-based markers.
 
 @author: Elias Gabriel and Duncan Mazza
-@revision: v1.0
+@revision: v1.1
 """
 import cv2
 import numpy as np
@@ -13,15 +13,15 @@ SCL = 2
 
 class MyDeque:
     """
-    This is a custom deque that is like a python deque but specifically for the purpose of averaging the face bounding
-    box variables over the latest five frames (to reduce the *jiggly* nature of the bounding box.
+    This is a custom deque-like class that enhances the stability of the positioning of the rectangles for the
+    trackers.
     """
 
     def __init__(self, smooth_level=5):
         """
-        Initializes the deque with 5 empty *bounding boxes*
-        :param smooth_level: The number of bounding box information tuples that will be averaged; the higher this
-        number, the greater the smoothing of the bounding box, but the more it will lag behind the face.
+        Initializes the deque with smooth_level empty rectangles
+        :param smooth_level: The number of rectangle information tuples that will be averaged; the higher this
+        number, the greater the smoothing of the rectangle, but the more it will lag behind the face.
         """
         self.smooth_level = smooth_level
         self.rect_list = []
@@ -31,9 +31,9 @@ class MyDeque:
 
     def add(self, rect):
         """
-        This method takes in the latest bounding box and returns the average of it and the previous 4 bounding boxes.
+        This method takes in the latest rectangle and returns the average of it and the previous 4 rectanglees.
         :param rect: a tuple of coordinates, where each coordinate is a tuple
-        :return x, y, w, h: the new parameters for a bounding box
+        :return latest_rect: the average rectangle of all rectangles in rect_list
         """
         self.rect_list.pop(0)
         self.rect_list.append(rect)
@@ -49,6 +49,9 @@ class MyDeque:
         return self.latest_rect
 
     def get_rect(self):
+        """
+        :return latest_rect: the average rectangle of all rectangles in rect_list
+        """
         return self.latest_rect
 
 
@@ -59,6 +62,13 @@ deque_dict = {0: MyDeque(10), 1: MyDeque(10), 2: MyDeque(10)}
 
 
 def parse_markers(frame, keypoints, i):
+    """
+    Interpret and display (using rectangles) the information from the blob detection's outputs.
+    :param frame: frame on which the rectangles will be drawn
+    :param keypoints: the output from the blob detection
+    :param i: the color of marker that is being looked for
+    :return None:
+    """
     coords = []
     # parse marker into coordinates
     for marker in keypoints:
@@ -85,7 +95,11 @@ def parse_markers(frame, keypoints, i):
         return None
 
 
-def look_for_markers(cap, num_people):
+def look_for_markers(cap):
+    """
+    Looks for markers and overlays them with rectangles
+    :param cap: the output of cv2.VideoCapture()
+    """
     params = cv2.SimpleBlobDetector_Params()
 
     # Filter by Area.
@@ -134,4 +148,4 @@ def look_for_markers(cap, num_people):
 if __name__ == "__main__":
     cap = cv2.VideoCapture(0)
 
-    look_for_markers(cap, num_people=3)
+    look_for_markers(cap)
