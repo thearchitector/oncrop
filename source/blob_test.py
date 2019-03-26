@@ -5,7 +5,7 @@ Prototyping for phone tracking with specific color-based markers.
 @revision: v1.1
 """
 import cv2
-import cam_classes as cl
+from api import  cam_classes as cl
 
 if __name__ == "__main__":
     camera = cl.CamReader()
