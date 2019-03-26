@@ -1,13 +1,22 @@
 """
 A web app interface for dynamic, live facial image insertion.
 
-@author: Elias Gabriel, Duncan Mazza
+@author: Elias Gabriel
 @revision: v1.0
 """
 from flask import Flask, render_template, Response
-import blob_test
+from classes import *
 
-app = Flask(__name__)
+class WebApp():
+    """ A class object for instantiating and launching a web server. """
+
+
+    def __init__(self, app_name=__name__, debug=False):
+        self.app = Flask(__name__)
+        self.app.debug = debug
+
+    def listen(ip=):
+    
 
 @app.route('/')
 def index():
