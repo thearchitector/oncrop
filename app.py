@@ -4,8 +4,7 @@ A web app interface for dynamic, live facial image insertion.
 @author: Elias Gabriel
 @revision: v1.0
 """
-from flask import Flask, render_template, Response
-from classes import *
+from flask import render_template, Response
 
 class WebApp():
     """ A class object for instantiating and launching a web server. """

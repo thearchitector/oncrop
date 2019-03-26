@@ -5,7 +5,6 @@ the rectangles for the trackers.
 @author: Duncan Mazza
 @revision: v1.0
 """
-
 import cv2
 import math
 
