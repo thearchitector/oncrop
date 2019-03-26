@@ -13,14 +13,14 @@ class WebApplication(Flask):
     """
 
 
-    def __init__(self, app_name=__name__, debug=False):
-        super(__name__)
+    def __init__(self, app_name=None, debug=False):
+        super().__init__(app_name or __name__)
         self.debug = debug
 
 
     def listen(self, ip="127.0.0.1", port=8080):
         """ Asks Flask to begin listening to HTTP requests on the given IP and port number. """
-        self.run(ip=ip, port=port)
+        self.run(host=ip, port=port)
 
 
     def route(self, routes):
