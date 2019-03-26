@@ -8,6 +8,12 @@ This file contains the classes used for the project's computer vision.
 import cv2
 import math
 
+    # Color parameters for blob detection
+    lower_dict = {0: (0, 0, 240), 1: (0, 240, 0), 2: (240, 0, 0)}
+    upper_dict = {0: (230, 230, 255), 1: (230, 255, 230), 2: (255, 230, 230)}
+    colors_dict = {2: (255, 0, 0), 1: (0, 255, 0), 0: (0, 0, 255)}
+    SCL = 2
+
 class SmoothRect:
     def __init__(self, smooth_level=5):
         """ Initializes the deque with smooth_level empty rectangles.
@@ -49,11 +55,7 @@ class SmoothRect:
 
 
 class CamReader:
-    # Color parameters for blob detection
-    lower_dict = {0: (0, 0, 240), 1: (0, 240, 0), 2: (240, 0, 0)}
-    upper_dict = {0: (230, 230, 255), 1: (230, 255, 230), 2: (255, 230, 230)}
-    colors_dict = {2: (255, 0, 0), 1: (0, 255, 0), 0: (0, 0, 255)}
-    SCL = 2
+
 
     def __init__(self, filterByArea=True, minArea=5, filterByCircularity=True, minCircularity=0.4,
                  filterByConvexity=True, minConvexity=0.7, filterByInertia=False, minInertiaRatio=0.5):
