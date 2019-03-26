@@ -1,35 +1,44 @@
 """
 A web app interface for dynamic, live facial image insertion.
 
-@author: Elias Gabriel
+@author: Elias Gabriel, Duncan Mazza
 @revision: v1.0
 """
-from flask import Flask, render_template, Response
-from classes import *
-
-class WebApp():
-    """ A class object for instantiating and launching a web server. """
+from flask render_template, Response
+from web_classes import WebApplication
+from cam_classes import CamReader
 
 
-    def __init__(self, app_name=__name__, debug=False):
-        self.app = Flask(__name__)
-        self.app.debug = debug
-
-    def listen(ip=):
-    
-
-@app.route('/')
 def index():
+    """ Renders the index HTML page. """
     return render_template('index.html')
 
-@app.route('/eye')
+
 def eye():
+    """ Returns a mixed multipart HTTP response containing streamed MJPEG data, pulled from
+    the OpenCV image processor. """
     return Response(feed(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-def feed():
-    camera = Camera()
 
-    while True:
+def feed():
+    """ Opens a camera reader, gets a processed frame, encodes it to JPEG, and returns it as a
+    snippet of a multipart response body. """
+    camera = CamReader()
+
+     while True:
         frame = camera.get_frame()
-        yield(b'--frame\r\n'
-              b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        yield(b'--frame\r\n' + b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
+
+if __name__ == "__main__":
+    # Create a new web application
+    app = WebApplication()
+
+    # Define the application routes
+    app.routes({
+        '/': index,
+        '/eye': eye
+    })
+
+    # Beginning listening on `localhost`, port 3000
+    app.listen(port=3000)

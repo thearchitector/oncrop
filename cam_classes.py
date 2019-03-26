@@ -4,7 +4,6 @@ This file contains the classes used for the project's computer vision.
 @author: Duncan Mazza
 @revision: v1.1
 """
-
 import cv2
 import math
 
