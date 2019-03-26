@@ -1,14 +1,16 @@
 """
-Contains all the classes required to create and launch this CV web application.
+Contains all the classes required to create and launch an application server.
 
-@author: Elias Gabriel, Duncan Mazza
+@author: Elias Gabriel, Duncan Mazz
 @revision: v1.0
 """
 from flask import Flask
 
 
 class WebApplication(Flask):
-    """ A wrapper for a Flask application to simplify app configuration and launching. """
+    """
+    A wrapper for a Flask application to simplify app configuration and launching.
+    """
 
 
     def __init__(self, app_name=__name__, debug=False):
