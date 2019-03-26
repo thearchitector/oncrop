@@ -7,7 +7,7 @@ Contains all the classes required to create and launch this CV web application.
 from flask import Flask
 
 
-class Application(Flask):
+class WebApplication(Flask):
     """ A wrapper for a Flask application to simplify app configuration and launching. """
 
 
