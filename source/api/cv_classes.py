@@ -26,7 +26,7 @@ class ByteCapture:
 
     def read():
         """ Returns the stored byte sequence. """
-        return self.bytes
+        return None, self.bytes
 
 
 
@@ -84,7 +84,7 @@ class ProcessingEngine:
         return cv2.imencode('.jpg', frame)[1].tobytes()
 
 
-
+# Artifact of incremental testing
 if __name__ == "__main__":
     engine = ProcessingEngine(source="local")
 
