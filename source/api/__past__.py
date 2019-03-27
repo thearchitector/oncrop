@@ -1,3 +1,2 @@
-import sys
-sys.path.append('/../../documentation/archive')
-import api as archive
+import sys, os
+sys.path.append(os.path.join(os.path.dirname(__file__), "../../archive/"))  

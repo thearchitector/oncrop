@@ -144,10 +144,8 @@ class CamReader:
 
 
     def get_frame(self):
-        """ Looks for markers and overlays them with rectangles.
-
-        :return frame: a OpenCV-readable numpy array of the frame to display
-        """
+        """ Looks for markers and overlays them with rectangles, and returns the byte sequence of a
+        single frame encoded as a JPEG. """
         # Capture frame-by-frame
         ret, frame = self.cap.read()
         blur = cv2.GaussianBlur(frame, (11, 11), 0)
@@ -164,6 +162,7 @@ class CamReader:
 
             self.parse_markers(frame, keypoints, i)
 
-        # frame = cv2.drawKeypoints(frame, keypoints, np.array([]), (0,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+        # frame = cv2.drawKeypoints(frame, keypoints, np.array([]), (0, 0, 255),
+        #                           cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
 
-        return frame
+        return cv2.imencode('.jpg', frame)[1].tobytes()
