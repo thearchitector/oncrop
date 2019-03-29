@@ -1,6 +1,6 @@
-# CropOnMe
+# Oncrop
 
-CropOnMe is a web app that [continued description here].
+Oncrop is a web app that [continued description here].
 
 ## Installation
 [Dependency installation steps here.]

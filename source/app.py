@@ -48,4 +48,4 @@ if __name__ == "__main__":
     # Define the application routes
     app.route({ '/': index, '/eye': eye })
     # Beginning listening on `localhost`, port 3000
-    app.listen(port=8080)
+    app.listen(port=8080, env="development")
