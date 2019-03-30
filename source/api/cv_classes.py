@@ -7,7 +7,7 @@ Contains all the classes used for computer vision and backend processing.
 import cv2
 import cv2.aruco as aruco
 import os
-
+import numpy as np
 
 
 class ByteCapture:
@@ -40,6 +40,12 @@ class ProcessingEngine:
     def __init__(self, source="webcam", filename=None):
         self.aruco_dict = aruco.Dictionary_get(aruco.DICT_6X6_250)
 
+        face = cv2.imread("{}".format(filename), -1)
+        if face is not None:
+            self.face = face
+            print(face.shape)
+            self.face_size_y, self.face_size_x, _ = face.shape
+
         # Create aruco markers if necessary
         if os.path.exists("markers/"): print("Markers already exist!")
         else:
@@ -47,7 +53,7 @@ class ProcessingEngine:
             os.system("mkdir markers")
 
             # Create 10 unique markers
-            for marker_num in range(10):   
+            for marker_num in range(10):
                 img = aruco.drawMarker(self.aruco_dict, marker_num, 700)
                 cv2.imwrite("markers/marker_{}.jpg".format(str(marker_num)), img)
 
@@ -74,20 +80,80 @@ class ProcessingEngine:
         """ Reads a frame from the given capture device, identifies the markers and inserts the desired
         faces. The processed frame is encoded as a JPEG and returned as a byte sequence. """
         _, frame = self.cap.read()
+        # height, width = frame.size
+        frame_x = frame.shape[1]
+        frame_y = frame.shape[0]
+
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         corners, _, _ = aruco.detectMarkers(gray, self.aruco_dict, parameters=self.parameters)
-        frame = aruco.drawDetectedMarkers(frame, corners)
 
-        # TODO: add capability for corner information to inform the placement of an image on top of the frame
-       
-        # Encode the final frame as a JPEG and return its byte sequence
-        return cv2.imencode('.jpg', frame)[1].tobytes()
+
+
+        # Find the x, y, w, and h of the aruco code (approx. since considering rotation and skew are not important)
+        if len(corners) != 0:
+            ####################################################################
+            x_plus = y_plus = 0
+            x_h_list = []
+            y_h_list = []
+            for corner in corners[0][0]:
+                x_h_list.append(int(corner[0]))
+                x_plus += corner[0]
+                y_h_list.append(int(corner[1]))
+                y_plus += corner[1]
+            x = int(x_plus / 4)  # center x
+            y = int(y_plus / 4)  # center y
+            min_x = min(x_h_list)
+            max_x = max(x_h_list)
+            min_y = min(y_h_list)
+            max_y = max(y_h_list)
+            h = max_y - min_y
+            w = max_x - min_x
+            # change x and y to be offsets instead of the center
+            face = cv2.resize(self.face, (3 * w, int(3 * w * (self.face_size_y / self.face_size_x))))
+            face_x = face.shape[1]
+            face_y = face.shape[0]
+            delta_x = int(face_x / 2)
+            delta_y = int(face_y / 2)
+            x1 = x - delta_x
+            y1 = y - delta_y
+            x2 = x1 + face_x
+            y2 = y1 + face_y
+
+            if x1 < 0:
+                x1 = 0
+                x2 = face_x
+            if y1 < 0:
+                y1 = 0
+                y2 = face_y
+            if x2 > frame_x:
+                x2 = frame_x
+                x1 = frame_x - face_x
+            if y2 > frame_y:
+                y2 = frame_y
+                y1 = frame_y - face_y
+
+            roi = frame[y1:y2, x1:x2]
+
+            mask = face[:,:,3]
+            mask_inv = cv2.bitwise_not(mask)
+            frame_bg = cv2.bitwise_and(roi, roi, mask = mask_inv)
+            face_fg = cv2.bitwise_and(face, face, mask = mask)
+            dst = cv2.add(frame_bg, face_fg[:,:,:3])
+            frame[y1:y2, x1:x2] = dst
+
+            # Encode the final frame as a JPEG and return its byte sequence
+            # return cv2.imencode('.jpg', frame)[1].tobytes()
+            return frame
+        else:
+            # Encode the final frame as a JPEG and return its byte sequence
+            # return cv2.imencode('.jpg', frame)[1].tobytes()
+            return frame
 
 
 # Artifact of incremental testing
 if __name__ == "__main__":
-    engine = ProcessingEngine(source="local")
+    engine = ProcessingEngine(source="local", filename = "will_smith.png")
 
     while True:
-        cv2.imshow('image', engine.get_frame())
+        cv2.imshow('res', engine.get_frame())
         if cv2.waitKey(1) & 0xFF == ord('q'): break
