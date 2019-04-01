@@ -1,3 +1,4 @@
 **/__pycache__
 /.idea
-/source/api/markers/
+/source/static/markers/
+**/*.rdb

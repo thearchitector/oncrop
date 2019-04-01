@@ -1,3 +1,10 @@
+/**
+Defines the CSS3 styles for all the DOM objects throughout the web app.
+
+@author: Elias Gabriel, Duncan Mazza
+@revision: v1.5
+@credit: Original styling based off of Bootstrap's example "Cover" theme
+**/
 html, body {
 	height: 100%;
 	background-color: #333;
@@ -28,8 +35,7 @@ body {
 	display: none;
 }
 
-#button {
-	width: 100%;
+.button {
 	color: #333;
  	text-shadow: none;
 	background-color: #fff;
@@ -41,5 +47,18 @@ body {
 #error {
 	width: 30rem;
 	margin: 0.25rem auto 6rem auto;
-	visibility: hidden;
+}
+
+#capture {
+	position: fixed; 
+	min-height: 100%;
+	top: 0; 
+	left: 50%;
+	transform: translateX(-50%) scaleX(-1);
+}
+
+#marker {
+	max-width: 100%;
+	padding: 5rem;
+	background-color: white;
 }
