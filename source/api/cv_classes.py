@@ -39,11 +39,8 @@ class ProcessingEngine:
         face = cv2.imread("{}".format(filename), -1)
         if face is not None:
             self.face = face
-            print(face.shape)
-            self.face_size_y, self.face_size_x, _ = face.shape
-            self.file_type = filename[len(filename) - 3:len(filename)]
-        else:  # image doesn't exist
-            self.file_type = False
+            self.face_size_x = face.shape[1]
+            self.face_size_y = face.shape[0]
 
         self.aruco_dict = aruco.Dictionary_get(aruco.DICT_6X6_250)
         # Create aruco markers if necessary
@@ -146,32 +143,30 @@ class ProcessingEngine:
             # pull out the region of interest:
             roi = frame[y1:y2, x1:x2]
 
-            if self.file_type == "png":
+            if face.shape[2] == 4:  # face image is a png
                 mask = face[:, :, 3]
                 mask_inv = cv2.bitwise_not(mask)
                 frame_bg = cv2.bitwise_and(roi, roi, mask=mask_inv)
                 face_fg = cv2.bitwise_and(face, face, mask=mask)
                 dst = cv2.add(frame_bg, face_fg[:, :, :3])
                 frame[y1:y2, x1:x2] = dst
-            elif self.file_type == "jpg":
+            elif face.shape[2] == 3:  # face image is a jpg or similar
                 frame[y1:y2, x1:x2] = face
-            else:
+            else:  # an edge case for some unsupported file type
                 return frame
 
             # Encode the final frame as a JPEG and return its byte sequence
             # return cv2.imencode('.jpg', frame)[1].tobytes()
-
             return frame
         else:
             # Encode the final frame as a JPEG and return its byte sequence
             # return cv2.imencode('.jpg', frame)[1].tobytes()
-
             return frame
 
 
 # Artifact of incremental testing
 if __name__ == "__main__":
-    engine = ProcessingEngine(source="local", filename="tux-r.jpg")
+    engine = ProcessingEngine(source="local", filename="will_smith.png")
 
     while True:
         cv2.imshow('res', engine.get_frame())
