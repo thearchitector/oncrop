@@ -66,8 +66,7 @@ class ProcessingEngine:
         """ Sets the face to append from a given filename. """
         # print(filename)
         self.face = cv2.imread("{}".format(filename), -1)
-        # self.face_size_y, self.face_size_x, self.face_dim = self.face.shape
-        self.file_type = "png"  # filename[len(filename) - 3:len(filename)]
+
 
     def get_frame(self):
         """ Reads a frame from the given capture device, identifies the markers and inserts the desired

@@ -15,9 +15,8 @@ document.body.onkeyup = function(e) {
 		canvas.height = bb.height;
 
 		let context = canvas.getContext('2d');
-		context.drawImage(im, 0, 0, bb.width, bb.height);		
-		context.scale(-1, 1);
-
+		context.drawImage(im, 0, 0, bb.width, bb.height);
+	
 		let data = new FormData();
 		data.append('URI', canvas.toDataURL('image/jpeg'));
 		fetch(ENDPOINT, {
