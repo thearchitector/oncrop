@@ -47,6 +47,7 @@ def marker():
 	""" Renders a random pre-generated AURCO marker. """
 	if not ('images' in session):
 		return index()
+
 	# Render the marker template and randomly select a marker file, set to randmarker variable
 	return render_template('marker.html', randmarker="markers/marker_" + str(randint(0, 9)) + ".jpg")
 
@@ -55,6 +56,7 @@ def snapshot():
 	""" Renders the camera viewpoint. """
 	if not ('images' in session):
 		return index(error=True)
+
 	return render_template('snapshot.html')
 
 
@@ -65,8 +67,8 @@ def eye():
 	engine = ProcessingEngine(source="local")
 	engine.set_face(session['images'][0])
 	# Clear and delete the cached session images
-	# for fpath in session['images']: os.remove(fpath)
-	# session.clear()
+	for fpath in session['images']: os.remove(fpath)
+	session.clear()
 
 	# Create and return a mutlipart HTTP response, with the separate parts defined by '--frame'
 	try: return Response(feed(engine), mimetype='multipart/x-mixed-replace; boundary=frame')
@@ -85,17 +87,44 @@ def feed(engine):
 	while True: yield(b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + engine.get_frame() + b'\r\n')
 
 
-def captured():
+def capture():
+	""" Passes the exported image data to `show`. """
+	URI = request.form.get('URI', None)
+
+	if not URI or not request.method == "POST":
+		return index()
+
+	session['uri'] = URI
+	return jsonify(status="success")
+
+
+def show():
 	"""
 	Displays the captured photo, and prompts the user to either take another photo or start again.
 	"""
-	return render_template('captured.html', captured_img="static/captured_img.jpg")
+	if not ('uri' in session):
+		return index(error=True)
+
+	uri = session['uri']
+	session.clear()
+	return render_template('show.html', captured_img=uri)
+
+
 
 # Only start the server if the script is run directly
 if __name__ == "__main__":
 	# Create a new web application
 	app = WebApplication("cropmeon")
 	# Define the application routes
-	app.route({ '/': index, '/eye': eye, '/upload': upload, '/marker': marker, '/snapshot': snapshot, '/captured': captured })
+	app.route({
+		'/': index,
+		'/eye': eye,
+		'/upload': upload,
+		'/marker': marker,
+		'/snapshot': snapshot,
+		'/capture': capture,
+		'/show': show
+	})
+
 	# Beginning listening on `localhost`, port 3000
 	app.listen(port=8080, env="development")
