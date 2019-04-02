@@ -12,23 +12,23 @@
 
  	<body class="text-center">
    		<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-			<main role="main" class="inner cover mt-auto">
-				<h1>Oncrop</h1>
-				<p class="lead">Crop people into your photos and videos with hardly a click. Upload images of people and they will be cropped automatically into your image wherever there are markers.</p>
-				<div id="dropzone" class="mb-5">
-					<form>
-						<input id="selector" type="file" multiple accept="image/png" onchange="uploadFiles(this.files)">
-						<label class="button w-100 p-5 bg-light" for="selector">Select or drag &amp; drop images</label>
-						<div id="error" class="bg-danger text-white" style="visibility: {{ visibility }}"><small>Gremlins seem to have stolen your packets. Please try again.</small></div>
-					</form>
-				</div>
-			</main>
-
-			<footer class="mastfoot mt-auto">
-				<div class="inner">
-					<p>Product by Elias Gabriel and Duncan Mazza. Made with <svg width="14" height="12"><path d="M1.014.994a3.335 3.335 0 0 0 0 4.789l5.982 5.884 5.99-5.877a3.334 3.334 0 0 0 0-4.789 3.49 3.49 0 0 0-4.88 0L7.002 2.083 5.894.995a3.49 3.49 0 0 0-4.88 0z" fill="#EF0107" fill-rule="evenodd"></path></svg> at Olin.</p>
+				<main role="main" class="inner cover mt-auto">
+					<h1>Oncrop</h1>
+					<p class="lead">Crop people into your photos and videos with hardly a click. Upload images of people and they will be cropped automatically into your image wherever there are markers.</p>
+					<div id="dropzone" class="mb-5">
+						<form>
+							<input id="selector" type="file" multiple accept="image/png" onchange="uploadFiles(this.files)">
+							<label class="button w-100 p-5 bg-light" for="selector">Select or drag &amp; drop images</label>
+							<div id="error" class="bg-danger text-white" style="visibility: {{ visibility }}"><small>Gremlins seem to have stolen your packets. Please try again.</small></div>
+						</form>
 					</div>
-			</footer>
+				</main>
+
+				<footer class="mastfoot mt-auto">
+					<div class="inner">
+						<p>Product by Elias Gabriel and Duncan Mazza. Made with <svg width="14" height="12"><path d="M1.014.994a3.335 3.335 0 0 0 0 4.789l5.982 5.884 5.99-5.877a3.334 3.334 0 0 0 0-4.789 3.49 3.49 0 0 0-4.88 0L7.002 2.083 5.894.995a3.49 3.49 0 0 0-4.88 0z" fill="#EF0107" fill-rule="evenodd"></path></svg> at Olin.</p>
+						</div>
+				</footer>
 		</div>
 
 		<script src="{{ url_for('static', filename='upload.js') }}"></script>

@@ -39,10 +39,10 @@ class WebApplication(Flask):
 
 		# Set configuration variables
 		self.debug = debug
-		self.config['SESSION_TYPE'] = 'redis'
+		self.config['SESSION_TYPE'] = 'redis'  # for storing data locally
 		self.config['SESSION_REDIS'] = launch_redis()
 		self.config['SECRET_KEY'] = os.urandom(16)
-		Session(self)
+		Session(self)  # for the cookies
 
 	def listen(self, **options):
 		""" Asks Flask to begin listening to HTTP requests, with options if given. """
