@@ -14,7 +14,7 @@ FACE_SCL = 4  # coefficient to scale the size of the face relative to the width 
 class ByteCapture:
     """
     Serves as a wrapper for a given byte sequence. This class forms a bridge between raw data and
-    an abstracted processing engine.
+    an abstracted processing engine. Currently it is not used - exists for future capabilities.
     """
 
     def write(self, byte_seq):
@@ -45,7 +45,7 @@ class ProcessingEngine:
         if source == "local":
             self.cap = cv2.VideoCapture(0)
         elif source == "remote":
-            self.cap = ByteCapture()
+            self.cap = ByteCapture()  # for future capabilities
         # Throw an error if something isn't write
         else:
             raise ("Unknown source type! Must be `local`, `file`, or `remote`.")
