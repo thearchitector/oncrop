@@ -132,11 +132,22 @@ class ProcessingEngine:
                 y2 = frame_y
                 y1 = frame_y - face_y
 
-            # if the face is too big:
+            # if the face is too big, stop displaying image and replace with error text
             if x2 - x1 >= frame_x or y2 - y1 >= frame_y:
                 # To display the text correctly because the image is flipped when displayed:
                 frame = cv2.flip(frame, 1)  # flip the frame
-                x = abs(frame_x - x)  # change the x value of the text to match flip
+                x = abs(frame_x - x) - 150  # change the x value of the text to match flip
+
+                # handle clipping
+                if x < 0:
+                    x = 0
+                if x > frame_x:
+                    x = frame_x
+                if y < 0:
+                    y = 0
+                if y > frame_y:
+                    y = frame_y
+
                 cv2.putText(frame, "You are too close to the frame", (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.6,
                             (255, 255, 255), 2)  # apply the text
                 frame = cv2.flip(frame, 1)  # flip the frame back; now the text will appear correctly in the browser
