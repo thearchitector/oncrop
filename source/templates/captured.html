@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="A compeuter vision assisted photo editing tool">
+		<meta name="author" content="Elias Gabriel, Duncan Mazza">
+		<title>Oncrop | A family photoshoot tool</title>
+		<link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+		<link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+ 	</head>
+
+ 	<body class="text-center">
+   	<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+			<main role="main" class="inner cover mt-auto">
+				<img id="marker" class="mb-3" src="{{ url_for('static', filename=captured_img) }}">
+				<p class="lead mb-5">Right click on the image to save it.</p>
+        <a href="/snapshot" class="cover button">Retake photo</a>
+        <a href="/" class="cover button">Return to home</a>
+			</main>
+
+			<footer class="mastfoot mt-auto">
+				<div class="inner">
+					<p>Product by Elias Gabriel and Duncan Mazza. Made with <svg width="14" height="12"><path d="M1.014.994a3.335 3.335 0 0 0 0 4.789l5.982 5.884 5.99-5.877a3.334 3.334 0 0 0 0-4.789 3.49 3.49 0 0 0-4.88 0L7.002 2.083 5.894.995a3.49 3.49 0 0 0-4.88 0z" fill="#EF0107" fill-rule="evenodd"></path></svg> at Olin.</p>
+				</div>
+			</footer>
+		</div>
+	</body>
+</html>
