@@ -85,11 +85,17 @@ def feed(engine):
 	while True: yield(b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + engine.get_frame() + b'\r\n')
 
 
+def captured():
+	"""
+	Displays the captured photo, and prompts the user to either take another photo or start again.
+	"""
+	return render_template('captured.html', captured_img="static/captured_img.jpg")
+
 # Only start the server if the script is run directly
 if __name__ == "__main__":
 	# Create a new web application
 	app = WebApplication("cropmeon")
 	# Define the application routes
-	app.route({ '/': index, '/eye': eye, '/upload': upload, '/marker': marker, '/snapshot': snapshot })
+	app.route({ '/': index, '/eye': eye, '/upload': upload, '/marker': marker, '/snapshot': snapshot, '/captured': captured })
 	# Beginning listening on `localhost`, port 3000
 	app.listen(port=8080, env="development")
