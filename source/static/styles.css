@@ -52,9 +52,16 @@ body {
 #capture {
 	position: fixed; 
 	min-height: 100%;
-	top: 0; 
+	top: 50px;
 	left: 50%;
 	transform: translateX(-50%) scaleX(-1);
+}
+
+#capture_instruct {
+	position: fixed;
+	min-height: 10%;
+	left: 50%;
+	text-align: center;
 }
 
 #marker {
