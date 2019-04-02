@@ -14,11 +14,11 @@
    		<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
 				<main role="main" class="inner cover mt-auto">
 					<h1>Oncrop</h1>
-					<p class="lead">Crop people into your photos and videos with hardly a click. Upload images of people and they will be cropped automatically into your image wherever there are markers.</p>
+					<p class="lead">Crop people into your photos and videos with hardly a click. Upload one image of a person who you would like automatically cropped into your photo.</p>
 					<div id="dropzone" class="mb-5">
 						<form>
 							<input id="selector" type="file" multiple accept="image/png" onchange="uploadFiles(this.files)">
-							<label class="button w-100 p-5 bg-light" for="selector">Select or drag &amp; drop images</label>
+							<label class="button w-100 p-5 bg-light" for="selector">Select or drag &amp; drop image</label>
 							<div id="error" class="bg-danger text-white" style="visibility: {{ visibility }}"><small>Gremlins seem to have stolen your packets. Please try again.</small></div>
 						</form>
 					</div>
