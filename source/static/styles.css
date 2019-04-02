@@ -69,3 +69,8 @@ body {
 	padding: 5rem;
 	background-color: white;
 }
+
+#captured_image {
+	max-width: 100%;
+	border-radius: 15px;
+}
