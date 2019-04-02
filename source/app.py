@@ -21,7 +21,8 @@ def index(error=False):
 def upload():
 	""" Handles image file uploads to the server. """
 	images = request.files.getlist('images[]') if 'images[]' in request.files else None
-	if not request.method.upper() == "POST" or not images: return index(error=True)
+	if not request.method.upper() == "POST" or not images:
+		return index(error=True)
 
 	# Save the uploaded images temporarily server-side, to be used when the  ProcessingEngine
 	# is constructed later
@@ -44,13 +45,16 @@ def upload():
 
 def marker():
 	""" Renders a random pre-generated AURCO marker. """
-	if not ('images' in session): return index()
+	if not ('images' in session):
+		return index()
+	# Render the marker template and randomly select a marker file, set to randmarker variable
 	return render_template('marker.html', randmarker="markers/marker_" + str(randint(0, 9)) + ".jpg")
 
 
 def snapshot():
 	""" Renders the camera viewpoint. """
-	if not ('images' in session): return index(error=True)
+	if not ('images' in session):
+		return index(error=True)
 	return render_template('snapshot.html')
 
 
@@ -61,8 +65,8 @@ def eye():
 	engine = ProcessingEngine(source="local")
 	engine.set_face(session['images'][0])
 	# Clear and delete the cached session images
-	#for fpath in session['images']: os.remove(fpath)
-	#session.clear()
+	# for fpath in session['images']: os.remove(fpath)
+	# session.clear()
 
 	# Create and return a mutlipart HTTP response, with the separate parts defined by '--frame'
 	try: return Response(feed(engine), mimetype='multipart/x-mixed-replace; boundary=frame')

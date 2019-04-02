@@ -155,7 +155,7 @@ class ProcessingEngine:
                 pass
 
             # Encode the final frame as a JPEG and return its byte sequence, if not in debug mode
-            return frame if self.debug else cv2.imencode('.jpg', frame)[1].tob
+            return frame if self.debug else cv2.imencode('.jpg', frame)[1].tobytes()
 
         else:
             # Encode the final frame as a JPEG and return its byte sequence, if not in debug mode
