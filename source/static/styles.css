@@ -55,6 +55,8 @@ body {
 	top: 50px;
 	left: 50%;
 	transform: translateX(-50%) scaleX(-1);
+	border-top-left-radius: 0.3rem;
+	border-top-right-radius: 0.3rem;
 }
 
 #capture_instruct {
@@ -72,5 +74,7 @@ body {
 
 #captured_image {
 	max-width: 100%;
-	border-radius: 15px;
+	border-radius: 0.3rem;
+	padding: 0.3rem;
+	background-color: white;
 }
