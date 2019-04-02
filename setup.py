@@ -5,7 +5,6 @@ An simple script to install all the runtime dependencies required of Oncrop.
 @revision: v1.0
 """
 import subprocess
-import sys
 from source.api.cv_classes import ProcessingEngine
 
 
@@ -17,7 +16,7 @@ def cmd(command, *args):
 # Execute if run directly from the command line
 if __name__ == "__main__":
 	print(" ===== Installing Python dependencies...")
-	cmd("pip", "install", "opencv-contrib-python Flask Flask-Session redis")
+	cmd("pip", "install", "opencv-python Flask Flask-Session redis")
 
 	# Download the latest Redis source
 	print("\n ===== Downloading Redis...")
