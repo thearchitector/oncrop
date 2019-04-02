@@ -104,6 +104,7 @@ class ProcessingEngine:
             ratio = self.face.shape[0] / self.face.shape[1]
             # print(self.face, ratio)
             face = cv2.resize(self.face, (FACE_SCL * w, int(FACE_SCL * w * ratio)))
+            face = cv2.flip(face, 1)  # so the face displays properly in the web browser
 
             face_x = face.shape[1]
             face_y = face.shape[0]
@@ -133,8 +134,12 @@ class ProcessingEngine:
 
             # if the face is too big:
             if x2 - x1 >= frame_x or y2 - y1 >= frame_y:
+                # To display the text correctly because the image is flipped when displayed:
+                frame = cv2.flip(frame, 1)  # flip the frame
+                x = abs(frame_x - x)  # change the x value of the text to match flip
                 cv2.putText(frame, "You are too close to the frame", (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.6,
-                            (255, 255, 255), 2)
+                            (255, 255, 255), 2)  # apply the text
+                frame = cv2.flip(frame, 1)  # flip the frame back; now the text will appear correctly in the browser
                 return frame if self.debug else cv2.imencode('.jpg', frame)[1].tobytes()
             else:  # face is correct size
                 pass
