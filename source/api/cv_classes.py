@@ -2,7 +2,7 @@
 Contains all the classes used for computer vision and backend processing.
 
 @author: Duncan Mazza, Elias Gabriel
-@revision: v1.3
+@revision: v1.5
 """
 import cv2
 import cv2.aruco as aruco

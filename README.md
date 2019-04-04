@@ -6,7 +6,6 @@ Oncrop is a web app that will crop a missing's friend face into the photo in rea
 Oncrop requires several dependencies to run. To make lives easier, dependency installation and configuration is all handled automatically by `setup.py`. Simply open a shell and run the following commands:
 
 ```sh
-	$ pip uninstall opencv-python
 	$ python setup.py
 ```
 
