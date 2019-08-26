@@ -2,6 +2,8 @@
 
 Oncrop is a web app that will crop a missing's friend face into the photo in real time. You place the photo by moving your phone around in the frame; the camera will track your phone using a provided ARUCO code. Don't worry, the web app is user friendly and will walk you through the steps.
 
+![example image](documentation/oncrop_example.png)
+
 ## Installation
 Oncrop requires several dependencies to run. To make lives easier, dependency installation and configuration is all handled automatically by `setup.py`. Simply open a shell and run the following commands:
 
