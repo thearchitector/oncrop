@@ -1,8 +1,8 @@
 """
 Contains all the classes required to create and launch an application server.
 
-@author: Elias Gabriel, Duncan Mazz
-@revision: v1.0
+@author: Elias Gabriel
+@revision: v1.2
 """
 from flask import Flask
 from redis import Redis, ConnectionError

@@ -1,8 +1,8 @@
 """
 A web app interface for dynamic, live facial image insertion.
 
-@author: Elias Gabriel, Duncan Mazza
-@revision: v1.0
+@author: Elias Gabriel
+@revision: v1.3
 """
 from flask import render_template, Response, request, session, redirect, jsonify
 from api.web_classes import WebApplication
@@ -12,17 +12,27 @@ from random import randint
 import os
 
 
+app = WebApplication("cropmeon")
+
+
+@app.route('/', methods=['GET'])
 def index(error=False):
 	""" Renders the index HTML page. """
 	# Render the index page, showing the error message if something went wrong
 	return render_template('index.html', visibility=("visible" if error else "hidden"))
 
 
+@app.errorhandler(404)
+def unknown_page(error):
+	""" Defines the response when a 404 HTTP status code is thrown. """
+	return index(error=True), 404
+
+
+@app.route('/upload', methods=['POST'])
 def upload():
 	""" Handles image file uploads to the server. """
 	images = request.files.getlist('images[]') if 'images[]' in request.files else None
-	if not request.method.upper() == "POST" or not images:
-		return index(error=True)
+	if not images: return index(error=True)
 
 	# Save the uploaded images temporarily server-side, to be used when the  ProcessingEngine
 	# is constructed later
@@ -43,23 +53,24 @@ def upload():
 	return jsonify(number_uploads=len(images), status="success")
 
 
+@app.route('/marker', methods=['GET'])
 def marker():
 	""" Renders a random pre-generated AURCO marker. """
-	if not ('images' in session):
-		return index()
+	if not ('images' in session): return index()
 
 	# Render the marker template and randomly select a marker file, set to randmarker variable
 	return render_template('marker.html', randmarker="markers/marker_" + str(randint(0, 9)) + ".jpg")
 
 
-def snapshot():
+@app.route('/capture', methods=['GET'])
+def capture():
 	""" Renders the camera viewpoint. """
-	if not ('images' in session):
-		return index(error=True)
+	if not ('images' in session): return index(error=True)
 
-	return render_template('snapshot.html')
+	return render_template('capture.html')
 
 
+@app.route('/eye', methods=['GET'])
 def eye():
 	""" Returns a mixed multipart HTTP response containing streamed MJPEG data, pulled from
 	the OpenCV image processor. """
@@ -87,44 +98,25 @@ def feed(engine):
 	while True: yield(b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + engine.get_frame() + b'\r\n')
 
 
-def capture():
+@app.route('/snapshot', methods=['POST'])
+def snapshot():
 	""" Passes the exported image data to `show`. """
 	URI = request.form.get('URI', None)
-
-	if not URI or not request.method == "POST":
-		return index()
-
+	if not URI: return index()
 	session['uri'] = URI
+
 	return jsonify(status="success")
 
 
+@app.route('/show', methods=['GET'])
 def show():
-	"""
-	Displays the captured photo, and prompts the user to either take another photo or start again.
-	"""
-	if not ('uri' in session):
-		return index(error=True)
-
+	""" Displays the captured photo, and prompts the user to either take another photo or start again. """
+	if not ('uri' in session): return index(error=True)
 	uri = session['uri']
 	session.clear()
+
 	return render_template('show.html', captured_img=uri)
 
 
-
-# Only start the server if the script is run directly
 if __name__ == "__main__":
-	# Create a new web application
-	app = WebApplication("cropmeon")
-	# Define the application routes
-	app.route({
-		'/': index,
-		'/eye': eye,
-		'/upload': upload,
-		'/marker': marker,
-		'/snapshot': snapshot,
-		'/capture': capture,
-		'/show': show
-	})
-
-	# Beginning listening on `localhost`, port 3000
 	app.listen(port=8080, env="development")

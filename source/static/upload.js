@@ -1,8 +1,8 @@
 /**
 Handles client-side interaction, primarily file drag and drop and upload.
 
-@author: Elias Gabriel, Duncan Mazza
-@revision: v1.0.1
+@author: Elias Gabriel
+@revision: v1.0.2
 **/
 const ENDPOINT = "/upload";
 const REDIRECT = "/marker";
